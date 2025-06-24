@@ -5,6 +5,9 @@ import { getProducts } from '@/lib/products';
 import { ProductCard } from '@/components/shared/ProductCard';
 import { EmailSubscriptionPopup } from '@/components/home/EmailSubscriptionPopup';
 import { ArrowRight } from 'lucide-react';
+import { CustomerShowcase } from '@/components/home/CustomerShowcase';
+import { Testimonials } from '@/components/home/Testimonials';
+import { NewsletterSubscription } from '@/components/home/NewsletterSubscription';
 
 export default function Home() {
   const allProducts = getProducts();
@@ -63,6 +66,12 @@ export default function Home() {
         </div>
       </section>
       
+      <CustomerShowcase />
+      
+      <Testimonials />
+
+      <NewsletterSubscription />
+
       <EmailSubscriptionPopup />
     </div>
   );
