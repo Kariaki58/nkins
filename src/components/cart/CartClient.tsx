@@ -108,7 +108,9 @@ export function CartClient() {
             <span>Total</span>
             <span>{formatPrice(cartTotal)}</span>
           </div>
-          <Button size="lg" className="w-full mt-6">Proceed to Checkout</Button>
+          <Button asChild size="lg" className="w-full mt-6">
+            <Link href="/checkout">Proceed to Checkout</Link>
+          </Button>
         </div>
       </div>
     </div>
