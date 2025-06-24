@@ -9,11 +9,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Wallet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePaystackPayment } from 'react-paystack';
 
 const checkoutSchema = z.object({
   // Shipping
@@ -23,12 +24,6 @@ const checkoutSchema = z.object({
   city: z.string().min(2, { message: "City must be at least 2 characters." }),
   postalCode: z.string().min(4, { message: "Postal code is required." }),
   country: z.string().min(2, { message: "Country is required." }),
-
-  // Payment
-  cardholderName: z.string().min(2, { message: "Cardholder name is required." }),
-  cardNumber: z.string().refine(val => /^\d{16}$/.test(val.replace(/\s/g, '')), { message: "Please enter a valid 16-digit card number." }),
-  expiryDate: z.string().refine(val => /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(val), { message: "Invalid expiry date. Use MM/YY format." }),
-  cvc: z.string().refine(val => /^\d{3,4}$/.test(val), { message: "Invalid CVC." }),
 });
 
 export function CheckoutClient() {
@@ -45,23 +40,52 @@ export function CheckoutClient() {
       city: "",
       postalCode: "",
       country: "Nigeria",
-      cardholderName: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvc: "",
     },
   });
 
-  const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
+  const watchedEmail = form.watch('email');
 
-  function onSubmit(values: z.infer<typeof checkoutSchema>) {
-    console.log("Checkout successful with values:", values);
+  const config = {
+    reference: (new Date()).getTime().toString(),
+    email: watchedEmail,
+    amount: cartTotal * 100, // Amount in Kobo
+    publicKey: 'pk_test_fe3c7c857fbdf1e647efae4259d89937f3914562',
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = (reference: any) => {
+    console.log("Payment successful with reference:", reference);
     toast({
-      title: "Order Placed!",
+      title: "Payment Successful!",
       description: "Thank you for your purchase. A confirmation has been sent to your email.",
     });
     clearCart();
     router.push('/shop');
+  };
+
+  const onClose = () => {
+    console.log('Paystack modal closed.');
+    toast({
+      title: "Payment Cancelled",
+      description: "You can try again anytime.",
+      variant: "destructive",
+    });
+  };
+
+  const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
+
+  function onSubmit(values: z.infer<typeof checkoutSchema>) {
+    console.log("Shipping details validated:", values);
+    if (cartTotal > 0 && values.email) {
+      initializePayment({onSuccess, onClose});
+    } else {
+        toast({
+            title: "Cannot proceed to payment",
+            description: "Please ensure your cart is not empty and you have entered a valid email.",
+            variant: "destructive"
+        })
+    }
   }
   
   if (cartItems.length === 0) {
@@ -134,45 +158,10 @@ export function CheckoutClient() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2"><CreditCard /> Payment Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <FormField control={form.control} name="cardholderName" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name on Card</FormLabel>
-                    <FormControl><Input placeholder="John Doe" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField control={form.control} name="cardNumber" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Card Number</FormLabel>
-                    <FormControl><Input placeholder="•••• •••• •••• ••••" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField control={form.control} name="expiryDate" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Expiry Date</FormLabel>
-                      <FormControl><Input placeholder="MM/YY" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="cvc" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>CVC</FormLabel>
-                      <FormControl><Input placeholder="123" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Button type="submit" size="lg" className="w-full">Place Order</Button>
+            <Button type="submit" size="lg" className="w-full">
+                <Wallet className="mr-2" />
+                Pay with Paystack
+            </Button>
           </form>
         </Form>
       </div>
