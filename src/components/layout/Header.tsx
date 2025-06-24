@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -22,6 +23,7 @@ export function Header() {
   const pathname = usePathname();
   const { cartCount } = useCart();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { status } = useSession();
 
   const NavLink = ({ href, label }: { href: string; label: string }) => (
     <Link
@@ -46,6 +48,11 @@ export function Header() {
           {navLinks.map(link => (
             <NavLink key={link.href} {...link} />
           ))}
+          {status === 'authenticated' ? (
+             <NavLink href="/admin" label="Dashboard" />
+          ) : (
+             <NavLink href="/admin/login" label="Admin" />
+          )}
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -81,6 +88,11 @@ export function Header() {
                   {navLinks.map(link => (
                       <NavLink key={link.href} {...link} />
                   ))}
+                  {status === 'authenticated' ? (
+                     <NavLink href="/admin" label="Dashboard" />
+                  ) : (
+                     <NavLink href="/admin/login" label="Admin" />
+                  )}
                 </nav>
             </SheetContent>
           </Sheet>

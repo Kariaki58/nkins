@@ -1,6 +1,10 @@
-import mongoose, { Schema, models } from 'mongoose';
+import mongoose, { Schema, models, Document } from 'mongoose';
 
 const UserSchema = new Schema({
+    name: {
+        type: String,
+        required: [true, 'Name is required'],
+    },
     email: {
         type: String,
         unique: true,
@@ -11,6 +15,11 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Password is required'],
         select: false
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'admin'
     }
 }, { timestamps: true });
 
