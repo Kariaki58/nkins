@@ -4,9 +4,9 @@ import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
-    await dbConnect();
-
     try {
+        await dbConnect();
+
         const { name, email, password } = await request.json();
 
         if (!name || !email || !password) {
