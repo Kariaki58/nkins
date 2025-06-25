@@ -1,25 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/shared/Logo';
 import { LayoutDashboard, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
 
 export function AdminHeader() {
-    const { data: session, status } = useSession();
+    const { isAuthenticated, loading, logout } = useAuth();
     const pathname = usePathname();
 
-    if (status === 'loading') {
+    if (loading) {
         return <div className="h-16 border-b bg-background"></div>;
     }
     
-    if (!session && pathname.startsWith('/admin')) {
+    // This check might be redundant due to middleware, but good for client-side safety
+    if (!isAuthenticated && pathname.startsWith('/admin') && pathname !== '/admin/login') {
         return null;
     }
 
     if (!pathname.startsWith('/admin')) {
+        return null;
+    }
+    
+    // Don't render header on the login page itself
+    if (pathname === '/admin/login') {
         return null;
     }
 
@@ -38,7 +44,7 @@ export function AdminHeader() {
                             Dashboard
                         </Link>
                     </Button>
-                    <Button variant="ghost" onClick={() => signOut({ callbackUrl: '/' })}>
+                    <Button variant="ghost" onClick={logout}>
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign Out
                     </Button>

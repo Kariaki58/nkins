@@ -1,17 +1,16 @@
-
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/hooks/use-cart';
 import Logo from '../shared/Logo';
+import { useAuth } from '@/hooks/use-auth';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -23,7 +22,7 @@ export function Header() {
   const pathname = usePathname();
   const { cartCount } = useCart();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { status } = useSession();
+  const { isAuthenticated, loading } = useAuth();
 
   const NavLink = ({ href, label }: { href: string; label: string }) => (
     <Link
@@ -48,10 +47,12 @@ export function Header() {
           {navLinks.map(link => (
             <NavLink key={link.href} {...link} />
           ))}
-          {status === 'authenticated' ? (
-             <NavLink href="/admin" label="Dashboard" />
-          ) : (
-             <NavLink href="/admin/login" label="Admin" />
+          {!loading && (
+            isAuthenticated ? (
+                <NavLink href="/admin" label="Dashboard" />
+            ) : (
+                <NavLink href="/admin/login" label="Admin" />
+            )
           )}
         </nav>
 
@@ -88,10 +89,12 @@ export function Header() {
                   {navLinks.map(link => (
                       <NavLink key={link.href} {...link} />
                   ))}
-                  {status === 'authenticated' ? (
-                     <NavLink href="/admin" label="Dashboard" />
-                  ) : (
-                     <NavLink href="/admin/login" label="Admin" />
+                  {!loading && (
+                    isAuthenticated ? (
+                        <NavLink href="/admin" label="Dashboard" />
+                    ) : (
+                        <NavLink href="/admin/login" label="Admin" />
+                    )
                   )}
                 </nav>
             </SheetContent>

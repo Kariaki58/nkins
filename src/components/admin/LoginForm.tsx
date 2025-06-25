@@ -3,15 +3,14 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
+import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -21,6 +20,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
+  const { setUser } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,37 +31,28 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const result = await signIn('credentials', {
-        redirect: false,
-        email: values.email,
-        password: values.password,
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values),
         });
 
-        if (result?.error) {
-            toast({
-                title: "Login Failed",
-                description: "Invalid email or password. Please try again.",
-                variant: "destructive",
-            });
-        } else if (result?.ok) {
-            toast({
-                title: "Login Successful",
-                description: "Welcome back!",
-            });
-            router.push('/admin');
-            router.refresh();
-        } else {
-             toast({
-                title: "Login Failed",
-                description: "An unexpected error occurred. Please try again.",
-                variant: "destructive",
-            });
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Login failed');
         }
-    } catch (error) {
-        console.error("Sign-in error:", error);
+        
+        setUser(data.user);
+        toast({
+            title: "Login Successful",
+            description: "Welcome back!",
+        });
+        router.push('/admin');
+    } catch (error: any) {
         toast({
             title: "Login Failed",
-            description: "A network error occurred. Please try again.",
+            description: error.message || "An unexpected error occurred. Please try again.",
             variant: "destructive",
         });
     }

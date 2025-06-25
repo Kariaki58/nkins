@@ -1,12 +1,2 @@
-'use client';
-
-import { SessionProvider } from 'next-auth/react';
-import type { ReactNode } from 'react';
-
-interface Props {
-  children: ReactNode;
-}
-
-export default function AuthProvider({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
-}
+// This file is no longer used and can be deleted.
+// It has been replaced by the new AuthProvider in /src/hooks/use-auth.tsx.
