@@ -3,14 +3,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from './use-toast';
-import { jwtDecode } from 'jwt-decode';
 
 interface User {
     id: string;
     name: string;
     email: string;
     role: 'admin' | 'user';
-    exp: number;
 }
 
 interface AuthContextType {
@@ -23,42 +21,33 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function getCookie(name: string): string | undefined {
-    if (typeof document === 'undefined') return undefined;
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-}
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const { toast } = useToast();
 
-    const checkToken = useCallback(() => {
-        const token = getCookie('token');
-        if (token) {
-            try {
-                const decodedUser: User = jwtDecode(token);
-                if (decodedUser.exp * 1000 > Date.now()) {
-                    setUser(decodedUser);
-                } else {
-                    setUser(null);
-                }
-            } catch (error) {
-                console.error('Invalid token:', error);
+    const fetchUser = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/auth/me');
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.user);
+            } else {
                 setUser(null);
             }
-        } else {
+        } catch (error) {
+            console.error('Failed to fetch user status', error);
             setUser(null);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     useEffect(() => {
-        checkToken();
-    }, [checkToken]);
+        fetchUser();
+    }, [fetchUser]);
 
     const logout = useCallback(async () => {
         try {
@@ -78,10 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const value = {
         user,
-        setUser: (newUser: User | null) => {
-            setUser(newUser);
-            if(newUser) router.refresh();
-        },
+        setUser,
         isAuthenticated: !!user,
         logout,
         loading,

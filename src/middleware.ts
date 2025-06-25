@@ -17,30 +17,42 @@ export async function middleware(request: NextRequest) {
     const isAdminRoute = pathname.startsWith('/admin');
     const isAuthRoute = pathname === '/admin/login' || pathname === '/register';
     
-    // Redirect away from auth routes if logged in
+    // Handle auth routes (/admin/login, /register)
     if (isAuthRoute) {
+        // If a user with a valid token tries to access login/register, redirect them to the dashboard
         if (token) {
-            return NextResponse.redirect(new URL('/admin/orders', request.url));
+            try {
+                await jwtVerify(token, await getSecretKey());
+                return NextResponse.redirect(new URL('/admin/orders', request.url));
+            } catch (err) {
+                // If token is invalid, let them proceed to the login page but clear the bad cookie
+                const response = NextResponse.next();
+                response.cookies.delete('token');
+                return response;
+            }
         }
+        // If no token, allow access to the auth page
         return NextResponse.next();
     }
     
-    // Protect admin routes
+    // Handle protected admin routes
     if (isAdminRoute) {
+        // If there's no token, redirect to login
         if (!token) {
             return NextResponse.redirect(new URL('/admin/login', request.url));
         }
-        try {
-            const secretKey = await getSecretKey();
-            const { payload } = await jwtVerify(token, secretKey);
 
+        // If there is a token, verify it
+        try {
+            const { payload } = await jwtVerify(token, await getSecretKey());
+            // Ensure user has admin role
             if (payload.role !== 'admin') {
-                 // If a non-admin tries to access an admin route, redirect to home
                  return NextResponse.redirect(new URL('/', request.url));
             }
-
+            // Token is valid and user is admin, allow access
             return NextResponse.next();
         } catch (err) {
+            // If token is invalid, redirect to login and clear the bad cookie
             console.error('JWT verification failed:', err);
             const url = request.nextUrl.clone();
             url.pathname = '/admin/login';
