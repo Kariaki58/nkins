@@ -15,32 +15,28 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     const isAdminRoute = pathname.startsWith('/admin');
+    const isProfileRoute = pathname.startsWith('/profile');
     const isAuthRoute = pathname === '/admin/login' || pathname === '/register';
     
-    // Allow public routes
-    if (!isAdminRoute) {
+    // Redirect away from auth routes if logged in
+    if (isAuthRoute) {
+        if (token) {
+            return NextResponse.redirect(new URL('/profile', request.url));
+        }
         return NextResponse.next();
     }
     
-    // Handle authentication for admin routes
-    if (isAdminRoute) {
+    // Protect routes
+    if (isAdminRoute || isProfileRoute) {
         if (!token) {
-            if (isAuthRoute) return NextResponse.next();
             return NextResponse.redirect(new URL('/admin/login', request.url));
         }
-
         try {
             const secretKey = await getSecretKey();
             const { payload } = await jwtVerify(token, secretKey);
 
-            if (payload.role !== 'admin') {
-                 const url = request.nextUrl.clone();
-                 url.pathname = '/';
-                 return NextResponse.redirect(url);
-            }
-
-            if (isAuthRoute) {
-                return NextResponse.redirect(new URL('/admin', request.url));
+            if (isAdminRoute && payload.role !== 'admin') {
+                 return NextResponse.redirect(new URL('/profile', request.url));
             }
 
             return NextResponse.next();
@@ -58,5 +54,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/register'],
+    matcher: ['/admin/:path*', '/register', '/profile'],
 };
