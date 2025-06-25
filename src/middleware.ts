@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
     // Redirect away from auth routes if logged in
     if (isAuthRoute) {
         if (token) {
-            return NextResponse.redirect(new URL('/admin', request.url));
+            return NextResponse.redirect(new URL('/admin/orders', request.url));
         }
         return NextResponse.next();
     }

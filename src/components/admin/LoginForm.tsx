@@ -46,9 +46,9 @@ export function LoginForm() {
         setUser(data.user);
         toast({
             title: "Login Successful",
-            description: "Welcome back! Redirecting to dashboard...",
+            description: "Welcome back! Redirecting to orders...",
         });
-        router.push('/admin');
+        router.push('/admin/orders');
     } catch (error: any) {
         toast({
             title: "Login Failed",
