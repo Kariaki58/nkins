@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose';
 async function getSecretKey() {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        throw new Error('JWT_SECRET environment variable is not set');
+        throw new Error('JWT_SECRET environment variable is not set. Please ensure it is defined in your .env.local file and the server has been restarted.');
     }
     return new TextEncoder().encode(secret);
 }

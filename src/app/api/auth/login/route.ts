@@ -7,6 +7,11 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
+    if (!process.env.JWT_SECRET) {
+        console.error('FATAL: JWT_SECRET environment variable is not set.');
+        return NextResponse.json({ message: 'Server configuration error: JWT secret is missing. Please check your .env.local file and restart the server.' }, { status: 500 });
+    }
+
     try {
         await dbConnect();
         const { email, password } = await request.json();
@@ -35,7 +40,7 @@ export async function POST(request: Request) {
             role: user.role,
         };
 
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET!, {
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
