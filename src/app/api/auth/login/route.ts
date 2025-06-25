@@ -56,8 +56,8 @@ export async function POST(request: Request) {
         }, { status: 200 });
 
     } catch (error) {
-        console.error(error);
+        console.error('Login API Error:', error);
         const errorMessage = error instanceof Error ? error.message : 'An internal server error occurred';
-        return NextResponse.json({ message: 'An error occurred', error: errorMessage }, { status: 500 });
+        return NextResponse.json({ message: errorMessage }, { status: 500 });
     }
 }
