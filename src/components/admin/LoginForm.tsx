@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const { toast } = useToast();
   const { setUser } = useAuth();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,9 +46,10 @@ export function LoginForm() {
         setUser(data.user);
         toast({
             title: "Login Successful",
-            description: "Welcome back! Redirecting to orders...",
+            description: "Welcome back! Redirecting to your dashboard...",
         });
-        window.location.href = '/admin/orders';
+        router.push('/admin/dashboard');
+        router.refresh();
     } catch (error: any) {
         toast({
             title: "Login Failed",

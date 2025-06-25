@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
         if (token) {
             try {
                 await jwtVerify(token, await getSecretKey());
-                return NextResponse.redirect(new URL('/admin/orders', request.url));
+                return NextResponse.redirect(new URL('/admin/dashboard', request.url));
             } catch (err) {
                 // If token is invalid, let them proceed to the login page but clear the bad cookie
                 const response = NextResponse.next();

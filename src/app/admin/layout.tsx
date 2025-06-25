@@ -18,7 +18,7 @@ import {
 import Logo from '@/components/shared/Logo';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/customers', label: 'Customers', icon: Users },
@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname.startsWith(item.href) && (item.href !== '/admin' || pathname === '/admin')}
+                    isActive={item.href === '/admin/dashboard' ? pathname === item.href : pathname.startsWith(item.href)}
                     tooltip={{ children: item.label }}
                   >
                     <Link href={item.href}>
