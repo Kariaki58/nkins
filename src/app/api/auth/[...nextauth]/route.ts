@@ -13,25 +13,36 @@ export const authOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                await dbConnect();
+                try {
+                    await dbConnect();
 
-                if (!credentials?.email || !credentials.password) {
+                    if (!credentials?.email || !credentials.password) {
+                        return null;
+                    }
+
+                    const lowercasedEmail = credentials.email.toLowerCase();
+                    const user = await User.findOne({ email: lowercasedEmail }).select('+password');
+                    
+                    if (!user) {
+                        return null;
+                    }
+
+                    const isPasswordMatch = await bcrypt.compare(credentials.password, user.password);
+
+                    if (!isPasswordMatch) {
+                        return null;
+                    }
+                    
+                    return {
+                        id: user._id.toString(),
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                    };
+                } catch (error) {
+                    console.error('Authorization error:', error);
                     return null;
                 }
-
-                const user = await User.findOne({ email: credentials.email }).select('+password');
-                
-                if (!user) {
-                    return null;
-                }
-
-                const isPasswordMatch = await bcrypt.compare(credentials.password, user.password);
-
-                if (!isPasswordMatch) {
-                    return null;
-                }
-                
-                return user;
             }
         })
     ],
@@ -39,14 +50,14 @@ export const authOptions = {
         strategy: 'jwt' as const,
     },
     callbacks: {
-        async jwt({ token, user }: { token: any, user: any }) {
+        async jwt({ token, user }) {
             if (user) {
-                token.id = user._id;
+                token.id = user.id;
                 token.role = user.role;
             }
             return token;
         },
-        async session({ session, token }: { session: any, token: any }) {
+        async session({ session, token }) {
             if (session.user) {
                 session.user.id = token.id;
                 session.user.role = token.role;

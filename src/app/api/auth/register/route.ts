@@ -16,8 +16,9 @@ export async function POST(request: Request) {
         if (password.length < 6) {
              return NextResponse.json({ message: 'Password must be at least 6 characters' }, { status: 400 });
         }
-
-        const existingUser = await User.findOne({ email });
+        
+        const lowercasedEmail = email.toLowerCase();
+        const existingUser = await User.findOne({ email: lowercasedEmail });
         if (existingUser) {
             return NextResponse.json({ message: 'User with this email already exists' }, { status: 409 });
         }
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
 
         const newUser = new User({
             name,
-            email,
+            email: lowercasedEmail,
             password: hashedPassword,
         });
 
