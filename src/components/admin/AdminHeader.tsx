@@ -6,16 +6,24 @@ import Logo from '@/components/shared/Logo';
 import { LayoutDashboard, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function AdminHeader() {
-    const { isAuthenticated, loading, logout } = useAuth();
+    const { isAuthenticated, loading, logout, user } = useAuth();
     const pathname = usePathname();
 
     if (loading) {
         return <div className="h-16 border-b bg-background"></div>;
     }
     
-    // This check might be redundant due to middleware, but good for client-side safety
     if (!isAuthenticated && pathname.startsWith('/admin') && pathname !== '/admin/login') {
         return null;
     }
@@ -24,9 +32,12 @@ export function AdminHeader() {
         return null;
     }
     
-    // Don't render header on the login page itself
     if (pathname === '/admin/login') {
         return null;
+    }
+    
+    const getInitials = (name: string) => {
+        return name.split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     return (
@@ -44,10 +55,34 @@ export function AdminHeader() {
                             Dashboard
                         </Link>
                     </Button>
-                    <Button variant="ghost" onClick={logout}>
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
-                    </Button>
+                    
+                    {user && (
+                         <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                                <Avatar className="h-10 w-10">
+                                    <AvatarImage src={`https://placehold.co/100x100.png`} alt={user.name} />
+                                    <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56" align="end" forceMount>
+                                <DropdownMenuLabel className="font-normal">
+                                <div className="flex flex-col space-y-1">
+                                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                                    <p className="text-xs leading-none text-muted-foreground">
+                                    {user.email}
+                                    </p>
+                                </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={logout}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>Sign Out</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
                 </div>
             </div>
         </header>
