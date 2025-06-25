@@ -30,25 +30,40 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const result = await signIn('credentials', {
-      redirect: false,
-      email: values.email,
-      password: values.password,
-    });
+    try {
+        const result = await signIn('credentials', {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+        });
 
-    if (result?.error) {
-      toast({
-        title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
-        variant: "destructive",
-      });
-    } else if (result?.ok) {
-      toast({
-        title: "Login Successful",
-        description: "Welcome back!",
-      });
-      router.push('/admin');
-      router.refresh();
+        if (result?.error) {
+            toast({
+                title: "Login Failed",
+                description: "Invalid email or password. Please try again.",
+                variant: "destructive",
+            });
+        } else if (result?.ok) {
+            toast({
+                title: "Login Successful",
+                description: "Welcome back!",
+            });
+            router.push('/admin');
+            router.refresh();
+        } else {
+             toast({
+                title: "Login Failed",
+                description: "An unexpected error occurred. Please try again.",
+                variant: "destructive",
+            });
+        }
+    } catch (error) {
+        console.error("Sign-in error:", error);
+        toast({
+            title: "Login Failed",
+            description: "A network error occurred. Please try again.",
+            variant: "destructive",
+        });
     }
   }
 
