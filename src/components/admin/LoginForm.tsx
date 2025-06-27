@@ -49,7 +49,6 @@ export function LoginForm() {
             description: "Welcome back! Redirecting to your dashboard...",
         });
         router.push('/admin/dashboard');
-        router.refresh();
     } catch (error: any) {
         toast({
             title: "Login Failed",
