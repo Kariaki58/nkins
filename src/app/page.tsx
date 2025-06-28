@@ -14,17 +14,31 @@ export default async function Home() {
   let products = [];
   let loading = true;
   try {
+    console.log("here")
     const res = await fetch(`${process.env.HOST}/api/products?page=1&limit=10`, {
       cache: "no-store",
     });
+    console.log("sent to server")
+    console.log(process.env.HOST)
     if (!res.ok) {
+      console.log(" something is wrong")
       const errorData = await res.json();
       error = errorData.error || "Failed to fetch products";
+      console.log({ error })
     }
     const data = await res.json();
+    console.log({
+      data
+    })
     products = data.data;
+    console.log({
+      products
+    })
   } catch (error: any) {
       error = error.message || "An error occurred while fetching products";
+      console.log({
+        error
+      })
   } finally {
       loading = false;
   }
