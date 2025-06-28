@@ -123,13 +123,20 @@ export async function POST(request) {
     try {
         const body = await request.json();
         const {
-            formData,
+            customer,
             items,
             total,
             shipping,
             tax,
             transactionId,
         } = body;
+
+        console.log(customer)
+
+        let formData = customer
+
+
+        console.log({formData, items, total, shipping, tax, transactionId})
 
         // Validate presence of required fields
         if (!formData || !items || !total || !transactionId) {
@@ -217,7 +224,8 @@ export async function POST(request) {
 
         const session = await getServerSession(options);
 
-        await logActivity(Activities.orderCreated(order, session.user));
+        // if (session)
+        await logActivity(Activities.orderCreated(order, session?.user));
 
         const emailNotification = generateSimpleSellerOrderNotificationTemplate()
 

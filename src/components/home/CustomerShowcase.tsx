@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const showcaseImages = [
-    { src: 'https://placehold.co/600x800.png', alt: 'Customer wearing a floral dress', hint: 'woman dress' },
-    { src: 'https://placehold.co/600x800.png', alt: 'Customer in a stylish jumpsuit', hint: 'woman jumpsuit' },
-    { src: 'https://placehold.co/600x800.png', alt: 'Customer in a casual chic top', hint: 'woman casual' },
-    { src: 'https://placehold.co/600x800.png', alt: 'Customer looking elegant in a maxi dress', hint: 'woman elegant' },
+    { src: '/image1.jpg', alt: 'Customer wearing a floral dress', hint: 'woman dress' },
+    { src: '/image2.jpg', alt: 'Customer in a stylish jumpsuit', hint: 'woman jumpsuit' },
+    { src: '/image3.jpg', alt: 'Customer in a casual chic top', hint: 'woman casual' },
+    { src: '/image4.jpg', alt: 'Customer looking elegant in a maxi dress', hint: 'woman elegant' },
 ];
 
 export function CustomerShowcase() {

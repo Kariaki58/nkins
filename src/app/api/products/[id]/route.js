@@ -1,4 +1,3 @@
-import { connectToDatabase } from "../../../lib/mongoose";
 import Product from "../../../../../models/product";
 import User from "../../../../../models/user";
 import { uploadImage, deleteImage } from "@/lib/cloudinary-upload";
@@ -7,6 +6,7 @@ import z from "zod";
 import { options } from "../../auth/options";
 import { logActivity } from "@/lib/activityLogger";
 import { Activities } from "@/lib/activityLogger";
+import { connectToDatabase } from "@/lib/mongoose";
 
 
 const VariantSchema = z.object({

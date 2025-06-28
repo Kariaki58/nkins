@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 export function CartClient() {
-  const { cartItems, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
   
   const formatPrice = (price: number) => {
     return `₦${price.toLocaleString()}`;
@@ -26,6 +26,13 @@ export function CartClient() {
       </div>
     );
   }
+
+  const cartTotal = cartItems.reduce((total, item) => {
+    return total + item.basePrice;
+  }, 0);
+
+
+
 
 
   console.log({

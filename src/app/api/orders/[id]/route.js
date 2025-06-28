@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/options";
-import { connectToDatabase } from "../../../lib/mongoose";
+import { connectToDatabase } from "@/lib/mongoose";
 import Order from "../../../../../models/orders";
 import User from "../../../../../models/user";
 import { sendEmail } from "@/lib/sendEmail";

@@ -60,7 +60,7 @@ export default async function Home() {
     <div className="flex flex-col">
       <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white bg-gray-800">
         <Image
-          src="https://placehold.co/1800x1000.png"
+          src="/nkins.png"
           alt="Elegant dress on a model"
           data-ai-hint="fashion model"
           layout="fill"
