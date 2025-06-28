@@ -80,11 +80,6 @@ const ProductSchema: Schema<IProduct> = new Schema({
         required: true
     },
     variants: [VariantSchema],
-    slug: {
-        type: String,
-        unique: true,
-        lowercase: true
-    },
     isActive: {
         type: Boolean,
         default: true
