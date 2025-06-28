@@ -101,6 +101,10 @@ export function CheckoutClient() {
       );
   }
 
+  console.log({
+    cartItems, cartTotal, clearCart
+  })
+
   return (
     <div className="lg:grid lg:grid-cols-2 lg:gap-12">
       <div className="mb-12 lg:mb-0">
@@ -176,7 +180,7 @@ export function CheckoutClient() {
               {cartItems.map(item => (
                 <div key={item.id} className="flex items-center gap-4">
                   <div className="relative w-16 h-20 rounded-md overflow-hidden border">
-                    <Image src={item.images[0]} alt={item.name} layout="fill" objectFit="cover" data-ai-hint="dress" />
+                    <Image src={item.variants[0].imageUrl} alt={item.name} layout="fill" objectFit="cover" data-ai-hint="dress" />
                     <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground font-bold">{item.quantity}</span>
                   </div>
                   <div className="flex-1">

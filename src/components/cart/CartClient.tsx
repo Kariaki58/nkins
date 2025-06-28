@@ -27,6 +27,11 @@ export function CartClient() {
     );
   }
 
+
+  console.log({
+    cartItems, cartTotal, clearCart
+  })
+
   return (
     <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
       <div className="lg:col-span-2">
@@ -45,7 +50,7 @@ export function CartClient() {
               <div className="flex items-start gap-4 pr-8 md:pr-0">
                 <Link href={`/product/${item.slug}`}>
                   <Image
-                    src={item.images[0]}
+                    src={item.variants[0].imageUrl}
                     alt={item.name}
                     width={80}
                     height={100}
@@ -56,26 +61,26 @@ export function CartClient() {
                 <div>
                   <Link href={`/product/${item.slug}`} className="font-semibold hover:text-primary">{item.name}</Link>
                   <p className="text-sm text-muted-foreground">{item.category}</p>
-                  <p className="text-md font-semibold text-primary/90 mt-1 md:hidden">{formatPrice(item.price)}</p>
+                  <p className="text-md font-semibold text-primary/90 mt-1 md:hidden">{formatPrice(item.basePrice)}</p>
                 </div>
               </div>
 
-              <p className="hidden md:block text-center font-semibold">{formatPrice(item.price)}</p>
+              <p className="hidden md:block text-center font-semibold">{formatPrice(item.basePrice)}</p>
               
               <div className="flex justify-between items-center md:justify-center mt-4 md:mt-0 pt-4 border-t md:border-t-0 md:pt-0">
-                  <div className="flex items-center rounded-full border">
-                    <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity - 1)} className="rounded-full h-8 w-8">
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    <span className="w-8 text-center text-sm font-bold">{item.quantity}</span>
-                    <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity + 1)} className="rounded-full h-8 w-8">
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <p className="md:hidden font-semibold text-right">{formatPrice(item.price * item.quantity)}</p>
+                <div className="flex items-center rounded-full border">
+                  <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity - 1)} className="rounded-full h-8 w-8">
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="w-8 text-center text-sm font-bold">{item.quantity}</span>
+                  <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity + 1)} className="rounded-full h-8 w-8">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="md:hidden font-semibold text-right">{formatPrice(item.basePrice * item.quantity)}</p>
               </div>
 
-              <p className="hidden md:block font-semibold text-right">{formatPrice(item.price * item.quantity)}</p>
+              <p className="hidden md:block font-semibold text-right">{formatPrice(item.basePrice * item.quantity)}</p>
 
               <div className="absolute top-4 right-4 md:relative md:top-auto md:right-auto">
                 <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive">

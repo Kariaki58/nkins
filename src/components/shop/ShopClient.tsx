@@ -85,12 +85,11 @@ export function ShopClient({ products, categories }: ShopClientProps) {
           </Button>
           {categories.map(category => (
             <Button
-              key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
-              onClick={() => handleCategoryChange(category)}
-              className={cn("rounded-full", selectedCategory === category && "bg-primary text-primary-foreground")}
+              key={category._id} // Use a unique identifier from your object
+              variant={selectedCategory === category._id ? 'default' : 'outline'}
+              onClick={() => handleCategoryChange(category._id)}
             >
-              {category}
+              {category.name}
             </Button>
           ))}
         </div>
@@ -113,7 +112,7 @@ export function ShopClient({ products, categories }: ShopClientProps) {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 min-h-[400px]">
         {paginatedProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
 

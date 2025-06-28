@@ -9,10 +9,52 @@ import { CustomerShowcase } from '@/components/home/CustomerShowcase';
 import { Testimonials } from '@/components/home/Testimonials';
 import { NewsletterSubscription } from '@/components/home/NewsletterSubscription';
 
-export default function Home() {
-  const allProducts = getProducts();
-  const featuredProducts = allProducts.filter(p => p.isFeatured).slice(0, 4);
-  const bestSellingProducts = allProducts.filter(p => p.isBestSeller).slice(0, 4);
+export default async function Home() {
+  let error = null;
+  let products = [];
+  let loading = true;
+  try {
+    const res = await fetch(`${process.env.HOST}/api/products?page=1&limit=10`, {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const errorData = await res.json();
+      error = errorData.error || "Failed to fetch products";
+    }
+    const data = await res.json();
+    products = data.data;
+  } catch (error: any) {
+      error = error.message || "An error occurred while fetching products";
+  } finally {
+      loading = false;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-semibold">Loading...</p>
+      </div>
+    );
+  }
+  const allProducts = products;
+  const featuredProducts = allProducts.slice(0, 4);
+  const bestSellingProducts = allProducts.slice(0, 4);
+
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-semibold text-red-500">Error: {error.message}</p>
+      </div>
+    );
+  }
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-semibold">No products found</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">
@@ -46,7 +88,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </div>
@@ -60,7 +102,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {bestSellingProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </div>

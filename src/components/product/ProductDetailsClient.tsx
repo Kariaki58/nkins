@@ -14,7 +14,7 @@ interface ProductDetailsClientProps {
 
 export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [selectedImage, setSelectedImage] = useState(product.variants[0].imageUrl);
   const { addToCart } = useCart();
 
   const handleQuantityChange = (amount: number) => {
@@ -40,14 +40,14 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
             />
           </div>
           <div className="flex gap-2">
-            {product.images.map((img, index) => (
+            {product.variants.map((content, index) => (
               <button
                 key={index}
-                onClick={() => setSelectedImage(img)}
-                className={`w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${selectedImage === img ? 'border-primary' : 'border-transparent hover:border-primary/50'}`}
+                onClick={() => setSelectedImage(content.imageUrl)}
+                className={`w-20 h-20 rounded-md overflow-hidden border-2 transition-all border-transparent hover:border-primary/50}`}
               >
                 <Image
-                  src={img}
+                  src={content.imageUrl}
                   alt={`${product.name} thumbnail ${index + 1}`}
                   width={80}
                   height={80}
@@ -62,7 +62,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
         <div className="py-4">
           <p className="text-sm font-semibold uppercase tracking-widest text-primary">{product.category}</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-headline my-2">{product.name}</h1>
-          <p className="text-3xl font-headline text-primary/90 mb-6">{formatPrice(product.price)}</p>
+          <p className="text-3xl font-headline text-primary/90 mb-6">{formatPrice(product.basePrice)}</p>
           <p className="text-muted-foreground leading-relaxed">{product.description}</p>
           
           <div className="mt-8 flex items-center gap-4">

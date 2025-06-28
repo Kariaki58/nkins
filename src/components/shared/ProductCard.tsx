@@ -20,12 +20,16 @@ export function ProductCard({ product }: ProductCardProps) {
     return `₦${price.toLocaleString()}`;
   };
 
+  console.log({ product })
+
   return (
     <Card className="group flex h-full flex-col overflow-hidden rounded-lg border-border/50 shadow-sm transition-all hover:shadow-md">
       <CardHeader className="p-0">
         <Link href={`/product/${product.slug}`} className="block overflow-hidden">
           <Image
-            src={product.images[0]}
+            src={product.variants[0].imageUrl}
+
+            // src={product.variants[0].imageUrl}
             alt={product.name}
             width={600}
             height={800}
@@ -42,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardTitle>
       </CardContent>
       <CardFooter className="flex items-center justify-between p-4 pt-0">
-        <p className="text-lg font-semibold text-primary/90">{formatPrice(product.price)}</p>
+        <p className="text-lg font-semibold text-primary/90">{formatPrice(product.basePrice)}</p>
         <Button size="sm" onClick={() => addToCart(product)}>
           <Plus className="mr-2 h-4 w-4" /> Add to Cart
         </Button>
