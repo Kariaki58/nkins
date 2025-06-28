@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Plus, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
+import { Edit, Trash2, Plus, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Award, Star, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import {
     Table,
@@ -112,6 +112,34 @@ export default function DashboardProduct() {
     const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
     const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
     const handlePageChange = (page) => setCurrentPage(page);
+
+    const updateProductStatus = async (productId, status, featuredExpiry = null) => {
+        try {
+            const response = await fetch(`/api/products/${productId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status, featuredExpiry }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to update product status');
+            }
+
+            const data = await response.json();
+            
+            // Update the product in state
+            setProducts(products.map(p => 
+                p._id === productId ? { ...p, status: data.product.status } : p
+            ));
+
+            toast.success(`Product status updated to ${status.replace('_', ' ')}`);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     const getPaginationItems = () => {
         const items = [];
@@ -237,13 +265,44 @@ export default function DashboardProduct() {
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
                                                     <Link 
-                                                        href={`/dashboard/new?id=${product._id}`} 
+                                                        href={`/dashboard/products/edit?id=${product._id}`} 
                                                         className="flex items-center cursor-pointer"
                                                         passHref
                                                     >
                                                         <Edit className="h-4 w-4 mr-2" />
                                                         Edit
                                                     </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    className={product.status === 'featured' ? "bg-blue-50 text-blue-600" : ""}
+                                                    onSelect={() => updateProductStatus(
+                                                        product._id, 
+                                                        'featured',
+                                                        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Default 7 days expiry
+                                                    )}
+                                                >
+                                                    <div className="flex items-center w-full">
+                                                        <Star className="h-4 w-4 mr-2" />
+                                                        {product.status === 'featured' ? 'Featured ✓' : 'Make Featured'}
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    className={product.status === 'best_seller' ? "bg-purple-50 text-purple-600" : ""}
+                                                    onSelect={() => updateProductStatus(product._id, 'best_seller')}
+                                                >
+                                                    <div className="flex items-center w-full">
+                                                        <Award className="h-4 w-4 mr-2" />
+                                                        {product.status === 'best_seller' ? 'Best Seller ✓' : 'Make Best Seller'}
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    className={product.status === 'regular' ? "bg-gray-50 text-gray-600" : ""}
+                                                    onSelect={() => updateProductStatus(product._id, 'regular')}
+                                                >
+                                                    <div className="flex items-center w-full">
+                                                        <RefreshCw className="h-4 w-4 mr-2" />
+                                                        Set as Regular
+                                                    </div>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem
                                                     className="text-red-600 focus:text-red-600 focus:bg-red-50"
@@ -255,6 +314,7 @@ export default function DashboardProduct() {
                                                     </div>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
+
                                         </DropdownMenu>
                                     </TableCell>
                                 </TableRow>

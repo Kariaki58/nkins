@@ -1,5 +1,12 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
+// ProductStatus enum - exported here
+export enum ProductStatus {
+    REGULAR = 'regular',
+    FEATURED = 'featured',
+    BEST_SELLER = 'best_seller'
+}
+
 interface IVariant {
     colors: string[];
     sizes: string[];
@@ -17,6 +24,9 @@ interface IProduct extends Document {
     variants: IVariant[];
     slug?: string;
     isActive?: boolean;
+    status?: ProductStatus;
+    featuredExpiry?: Date;
+    bestSellerSince?: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -78,16 +88,38 @@ const ProductSchema: Schema<IProduct> = new Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    status: {
+        type: String,
+        enum: Object.values(ProductStatus),
+        default: ProductStatus.REGULAR
+    },
+    featuredExpiry: {
+        type: Date,
+        required: function() {
+            return this.status === ProductStatus.FEATURED;
+        }
+    },
+    bestSellerSince: {
+        type: Date,
+        required: function() {
+            return this.status === ProductStatus.BEST_SELLER;
+        }
     }
 }, {
     timestamps: true,
 });
 
+// Indexes
 ProductSchema.index({ name: 'text', description: 'text' });
 ProductSchema.index({ category: 1 });
 ProductSchema.index({ 'variants.colors': 1 });
 ProductSchema.index({ 'variants.sizes': 1 });
+ProductSchema.index({ status: 1 });
+ProductSchema.index({ featuredExpiry: 1 });
+ProductSchema.index({ bestSellerSince: -1 });
 
+// Pre-save hook
 ProductSchema.pre<IProduct>('save', function(next) {
     this.updatedAt = new Date();
     
@@ -105,12 +137,25 @@ ProductSchema.pre<IProduct>('save', function(next) {
             variant.sku = `${this.slug?.substring(0, 5)}-${colorCode}-${sizeCode}`.toUpperCase();
         }
     });
+
+    if (this.isModified('status') && this.status === ProductStatus.BEST_SELLER && !this.bestSellerSince) {
+        this.bestSellerSince = new Date();
+    }
     
     next();
 });
 
-interface IProductModel extends Model<IProduct> {}
+ProductSchema.methods.isFeaturedActive = function(): boolean {
+    return this.status === ProductStatus.FEATURED && 
+           (!this.featuredExpiry || this.featuredExpiry > new Date());
+};
+
+interface IProductModel extends Model<IProduct> {
+    getFeaturedProducts(): Promise<IProduct[]>;
+    getBestSellers(limit?: number): Promise<IProduct[]>;
+}
 
 const Product: IProductModel = mongoose.models.Product || mongoose.model<IProduct, IProductModel>('Product', ProductSchema);
 
+// Only export default here - ProductStatus is already exported at the top
 export default Product;
