@@ -45,10 +45,10 @@ export default function TrackOrderDetails({ order }: TrackOrderDetailsProps) {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Order #{order._id}</CardTitle>
+              <CardTitle>Order #{String(order._id).slice(0, 6)}</CardTitle>
               <CardDescription>Placed on {formatDate(order.createdAt)}</CardDescription>
             </div>
-            <Badge 
+            {/* <Badge 
               variant={
                 order.status === 'delivered' ? 'default' :
                 order.status === 'cancelled' ? 'destructive' : 'secondary'
@@ -56,7 +56,7 @@ export default function TrackOrderDetails({ order }: TrackOrderDetailsProps) {
               className="text-sm py-1 px-3 capitalize"
             >
               {order.status}
-            </Badge>
+            </Badge> */}
           </div>
         </CardHeader>
         <CardContent>
