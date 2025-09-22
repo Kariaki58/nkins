@@ -4,8 +4,34 @@ import { connectToDatabase } from "@/lib/mongoose";
 import Order from "../../../../../models/orders";
 import User from "../../../../../models/user";
 import { sendEmail } from "@/lib/sendEmail";
+import { NextResponse } from "next/server";
 import { generateBuyerCancelledEmail, generateBuyerDeliveredEmail, generateBuyerOrderStatusEmail } from "@/lib/email-template/content";
 
+
+export async function GET(
+  request,
+  { params }
+) {
+  try {
+    await connectToDatabase();
+    const { id } = await params;
+    
+
+    console.log({ id })
+    const order = await Order.findById(id);
+    
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(order);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function PUT(request, { params }) {
     try {

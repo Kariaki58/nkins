@@ -11,7 +11,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground">
-              Elegance in every thread.
+              Wear confidence, wear Nkins.
             </p>
           </div>
           <div>
@@ -25,9 +25,9 @@ export function Footer() {
           <div>
             <h3 className="font-headline text-lg font-semibold">Legal</h3>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
-              <li><Link href="/shipping-returns" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Returns</Link></li>
+              <li><Link href="/policy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/policy" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link href="/policy" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Returns</Link></li>
             </ul>
           </div>
           <div>

@@ -132,7 +132,7 @@ export const generateBuyerOrderStatusEmail = ({ status, firstName, items, tracki
                 <p style="margin: 0;">Quantity: ${item.quantity}</p>
                 ${item.color ? `<p style="margin: 0;">Color: ${item.color}</p>` : ''}
                 ${item.size ? `<p style="margin: 0;">Size: ${item.size}</p>` : ''}
-                <p style="margin: 0;">Price: $${item.price.toFixed(2)}</p>
+                <p style="margin: 0;">Price: ₦${item.price.toFixed(2)}</p>
             </div>
         </div>
     `).join('');

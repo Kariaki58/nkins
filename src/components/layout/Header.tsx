@@ -22,6 +22,7 @@ const navLinks: NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/shop', label: 'Shop' },
   { href: '/contact', label: 'Contact Us' },
+  { href: '/track', label: 'Track Orders' }
 ];
 
 export function Header() {

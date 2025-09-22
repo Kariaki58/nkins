@@ -520,8 +520,8 @@ export default function DashboardOrders() {
                             <div>
                                 <p className="font-medium">{item.name}</p>
                                 <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
-                                <p className="text-sm text-muted-foreground">Color: {item.color}</p>
-                                <p className="text-sm text-muted-foreground">Size: {item.size}</p>
+                                <p className="text-sm text-muted-foreground">Color: {item.variant.color}</p>
+                                <p className="text-sm text-muted-foreground">Size: {item.variant.size}</p>
                                 <div className="relative h-16 w-16 rounded-md overflow-hidden flex-shrink-0">
                                     <img
                                         src={item.image}

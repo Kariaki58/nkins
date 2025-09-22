@@ -20,6 +20,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return `₦${price.toLocaleString()}`;
   };
 
+
   console.log({ product })
 
   return (

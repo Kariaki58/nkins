@@ -7,9 +7,7 @@ import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Separator } from '@/components/ui/separator';
-import { ChevronLeft, ShoppingCart, Wallet } from 'lucide-react';
+import { ChevronLeft, ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -60,8 +58,11 @@ export function CheckoutClient() {
     });
   }, []);
 
+  console.log(cartItems)
+
+  // ✅ use finalPrice instead of basePrice
   const cartTotal = cartItems.reduce(
-    (total, item) => total + (item.basePrice * item.quantity),
+    (total, item) => total + (item.finalPrice * item.quantity),
     0
   );
   const shipping = 3000;
@@ -70,11 +71,6 @@ export function CheckoutClient() {
   const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
   const handlePlaceOrder = async (formData: z.infer<typeof checkoutSchema>) => {
-
-    console.log({
-      formData
-    })
-    console.log("email", formData.email)
     if (!PaystackPop) {
       toast({
         title: "Payment Error",
@@ -108,23 +104,25 @@ export function CheckoutClient() {
               customer: formData,
               items: cartItems.map(item => ({
                 productId: item.id,
-                name: item.name,
+                name: item.product?.name || item.name,
                 quantity: item.quantity,
-                price: item.basePrice,
-                image: item.variants[0].imageUrl,
-                category: item.category,
+                price: item.finalPrice,
+                image: item.selectedVariant.imageUrl,
+                category: item.product?.category || "Uncategorized",
+                variant: {
+                  size: item.selectedVariant?.sizes?.[0],
+                  color: item.selectedVariant?.colors?.[0],
+                }
               })),
               shipping,
               tax: 0,
               total,
               transactionId: transaction.reference,
             };
-            
+
             const response = await fetch('/api/orders', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(orderData),
             });
 
@@ -169,13 +167,10 @@ export function CheckoutClient() {
   };
 
   function onSubmit(values: z.infer<typeof checkoutSchema>) {
-    console.log(values)
     handlePlaceOrder(values);
   }
 
-  if (!isMounted) {
-    return null;
-  }
+  if (!isMounted) return null;
 
   if (cartItems.length === 0) {
     return (
@@ -202,6 +197,7 @@ export function CheckoutClient() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* LEFT SIDE: FORM */}
           <div>
             <h1 className="text-2xl font-bold text-slate-900 mb-8">Checkout</h1>
             <Form {...form}>
@@ -301,6 +297,7 @@ export function CheckoutClient() {
             </Form>
           </div>
 
+          {/* RIGHT SIDE: ORDER SUMMARY */}
           <div className="bg-slate-50 p-6 rounded-lg h-fit sticky top-4">
             <h2 className="text-lg font-medium text-slate-900 mb-4">Order Summary</h2>
             
@@ -309,8 +306,8 @@ export function CheckoutClient() {
                 <div key={item.id} className="flex items-center border-b border-slate-100 pb-4">
                   <div className="relative h-16 w-16 rounded-md overflow-hidden flex-shrink-0">
                     <Image
-                      src={item.variants[0].imageUrl}
-                      alt={item.name}
+                      src={item.selectedVariant.imageUrl}
+                      alt={item.product?.name || item.name}
                       fill
                       className="object-cover object-center"
                     />
@@ -319,10 +316,10 @@ export function CheckoutClient() {
                     </span>
                   </div>
                   <div className="ml-4 flex-1">
-                    <h3 className="text-sm font-medium text-slate-900">{item.name}</h3>
-                    <p className="text-sm text-slate-500">{item.category}</p>
+                    <h3 className="text-sm font-medium text-slate-900">{item.product?.name || item.name}</h3>
+                    <p className="text-sm text-slate-500">{item.product?.category}</p>
                     <p className="text-sm font-medium text-slate-900">
-                      {item.quantity} × {formatPrice(item.basePrice)}
+                      {item.quantity} × {formatPrice(item.finalPrice)}
                     </p>
                   </div>
                 </div>

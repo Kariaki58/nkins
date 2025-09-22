@@ -14,6 +14,7 @@ export default async function DashboardLayout({ children }) {
             </div>
         );
     }
+    console.log({session})
     if (session.user.role !== "admin") {
 
         return (

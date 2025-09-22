@@ -28,7 +28,7 @@ export default function ContactPage() {
                         <div>
                             <h3 className="text-lg font-semibold">Email</h3>
                             <p className="text-muted-foreground">Reach out to us for any inquiries.</p>
-                            <a href="mailto:support@nkins.com" className="text-primary hover:underline">support@nkins.com</a>
+                            <a href="mailto:support@nkins.shop" className="text-primary hover:underline">support@nkins.shop</a>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -38,7 +38,9 @@ export default function ContactPage() {
                         <div>
                             <h3 className="text-lg font-semibold">Phone</h3>
                             <p className="text-muted-foreground">Mon-Fri, 9am-5pm WAT.</p>
-                            <a href="tel:+2348000000000" className="text-primary hover:underline">+234 (800) 000-0000</a>
+                            <a href="tel:+2348107920394" className="text-primary hover:underline">+2348107920394</a>
+                            <div />
+                            <a href="tel:+2347074212990" className="text-primary hover:underline">+2347074212990</a>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -47,7 +49,7 @@ export default function ContactPage() {
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold">Our Office</h3>
-                            <p className="text-muted-foreground">123 Fashion Avenue, Lagos, Nigeria</p>
+                            
                         </div>
                     </div>
                 </div>
