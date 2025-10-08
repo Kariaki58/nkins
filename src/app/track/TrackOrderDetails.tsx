@@ -1,6 +1,6 @@
 'use client';
 
-import { Order } from './page'; // import Order type from TrackOrderPage
+import { Order } from './page';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Package, Truck, CheckCircle, Clock, ArrowLeft } from 'lucide-react';

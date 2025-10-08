@@ -95,7 +95,7 @@ export default async function Home() {
               <h2 className="text-3xl md:text-4xl font-bold">Featured Collection</h2>
               <p className="text-muted-foreground mt-2">Handpicked styles, just for you.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredProducts.map(product => (
                 <ProductCard key={product._id} product={product} />
               ))}
