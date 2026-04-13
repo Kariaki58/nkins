@@ -18,8 +18,12 @@ export default async function Home() {
       cache: "no-store",
     });
 
+    console.log(process.env.HOST)
+
     if (!res.ok) {
       const errorData = await res.json();
+
+      console.log(errorData)
       error = errorData.error || "Failed to fetch products";
     } else {
       const data = await res.json();

@@ -100,6 +100,13 @@ const ProductSchema: Schema<IProduct> = new Schema({
         required: function() {
             return this.status === ProductStatus.BEST_SELLER;
         }
+    },
+    slug: {
+        type: String,
+        unique: true,
+        sparse: true,
+        trim: true,
+        lowercase: true
     }
 }, {
     timestamps: true,
@@ -113,6 +120,7 @@ ProductSchema.index({ 'variants.sizes': 1 });
 ProductSchema.index({ status: 1 });
 ProductSchema.index({ featuredExpiry: 1 });
 ProductSchema.index({ bestSellerSince: -1 });
+ProductSchema.index({ slug: 1 });
 
 // Pre-save hook
 ProductSchema.pre<IProduct>('save', function(next) {

@@ -26,6 +26,8 @@ const ProductSchema = z.object({
 export async function GET(req) {
     try {
         await connectToDatabase();
+
+        console.log("pass")
         
         // Parse query parameters for pagination
         const url = new URL(req.url);
@@ -66,6 +68,7 @@ export async function GET(req) {
             },
         });
     } catch (error) {
+        console.log(error)
         return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
             status: 500,
             headers: {
