@@ -73,10 +73,10 @@ export function Testimonials() {
                       </div>
                       <p className="text-muted-foreground mb-6 flex-grow">&quot;{testimonial.review}&quot;</p>
                       <div className="flex items-center gap-4 mt-auto">
-                          <Avatar>
+                          {/* <Avatar>
                               <AvatarImage src={`https://placehold.co/40x40.png`} alt={testimonial.name} />
                               <AvatarFallback>{testimonial.avatar}</AvatarFallback>
-                          </Avatar>
+                          </Avatar> */}
                           <p className="font-semibold">{testimonial.name}</p>
                       </div>
                     </CardContent>
