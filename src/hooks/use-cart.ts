@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const storedCart = localStorage.getItem('nkins_cart');
+      const storedCart = localStorage.getItem('gifto_cart');
       if (storedCart) {
         setCartItems(JSON.parse(storedCart));
       }
@@ -41,7 +41,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      localStorage.setItem('nkins_cart', JSON.stringify(cartItems));
+      localStorage.setItem('gifto_cart', JSON.stringify(cartItems));
     } catch (error) {
       console.error("Failed to save cart to localStorage", error);
     }

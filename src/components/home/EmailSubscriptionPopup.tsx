@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from '@/components/ui/input';
 
 const POPUP_DELAY = 5000; // 5 seconds
-const SESSION_STORAGE_KEY = 'nkins_popup_shown';
+const SESSION_STORAGE_KEY = 'gifto_popup_shown';
 
 export function EmailSubscriptionPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +44,7 @@ export function EmailSubscriptionPopup() {
           <DialogTitle className="text-center text-2xl font-headline">Join Our Circle</DialogTitle>
           <DialogDescription className="text-center">
             {isSubscribed 
-              ? "Thank you for subscribing! Welcome to the Nkins family."
+              ? "Thank you for subscribing! Welcome to the Gifto Boutique family."
               : "Be the first to know about new arrivals, exclusive sales, and styling tips. Get 10% off your first order!"
             }
           </DialogDescription>

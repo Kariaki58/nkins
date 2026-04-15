@@ -2,8 +2,8 @@ import { ContactForm } from "@/components/contact/ContactForm";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export const metadata = {
-    title: 'Contact Us - Nkins Online',
-    description: 'Get in touch with Nkins Online. We are here to help with any questions about our products, orders, or styling advice.',
+    title: 'Contact Us - Gifto Boutique',
+    description: 'Get in touch with Gifto Boutique, Uyo. We are here to help with any questions about our products, orders, or styling advice.',
 };
 
 export default function ContactPage() {
@@ -28,7 +28,7 @@ export default function ContactPage() {
                         <div>
                             <h3 className="text-lg font-semibold">Email</h3>
                             <p className="text-muted-foreground">Reach out to us for any inquiries.</p>
-                            <a href="mailto:support@nkins.shop" className="text-primary hover:underline">support@nkins.shop</a>
+                            <a href="mailto:support@giftoboutique.com" className="text-primary hover:underline">support@giftoboutique.com</a>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -37,10 +37,8 @@ export default function ContactPage() {
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold">Phone</h3>
-                            <p className="text-muted-foreground">Mon-Fri, 9am-5pm WAT.</p>
-                            <a href="tel:+2348107920394" className="text-primary hover:underline">+2348107920394</a>
-                            <div />
-                            <a href="tel:+2347074212990" className="text-primary hover:underline">+2347074212990</a>
+                            <p className="text-muted-foreground">Mon-Sat, 9am-6pm WAT.</p>
+                            <a href="tel:+2348103549727" className="text-primary hover:underline">+234 810 354 9727</a>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -48,8 +46,9 @@ export default function ContactPage() {
                             <MapPin className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold">Our Office</h3>
-                            
+                            <h3 className="text-lg font-semibold">Our Store</h3>
+                            <p className="text-muted-foreground">Nwaniba Road, Uyo 520101, Akwa Ibom, Nigeria</p>
+                            <p className="text-muted-foreground mt-1">Also at 139 Aka Etinan Road, Uyo</p>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground">
-              Wear confidence, wear Nkins.
+              Quality men's clothing, trusted by Uyo.
             </p>
           </div>
           <div>
@@ -40,7 +40,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Nkins Online. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Gifto Boutique. All rights reserved.</p>
         </div>
       </div>
     </footer>

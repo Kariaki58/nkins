@@ -1,7 +1,7 @@
 import { CartClient } from "@/components/cart/CartClient";
 
 export const metadata = {
-    title: 'Your Shopping Cart - Nkins Online',
+    title: 'Your Shopping Cart - Gifto Boutique',
     description: 'Review items in your shopping cart and proceed to checkout.',
 };
 

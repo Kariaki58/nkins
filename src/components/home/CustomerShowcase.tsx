@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const showcaseImages = [
-    { src: '/image1.jpg', alt: 'Customer wearing a floral dress', hint: 'woman dress' },
-    { src: '/image2.jpg', alt: 'Customer in a stylish jumpsuit', hint: 'woman jumpsuit' },
-    { src: '/image3.jpg', alt: 'Customer in a casual chic top', hint: 'woman casual' },
-    { src: '/image4.jpg', alt: 'Customer looking elegant in a maxi dress', hint: 'woman elegant' },
+    { src: '/image1.jpg', alt: 'Customer in a sharp suit', hint: 'man suit' },
+    { src: '/image2.jpg', alt: 'Customer in premium trousers', hint: 'man trousers' },
+    { src: '/image3.jpg', alt: 'Customer styled in accessories', hint: 'man accessories' },
+    { src: '/image4.jpg', alt: 'Customer looking elegant in formal wear', hint: 'man formal' },
 ];
 
 export function CustomerShowcase() {
@@ -14,8 +14,8 @@ export function CustomerShowcase() {
         <section className="py-16 md:py-24 bg-secondary/20">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold">#NkinsStyle</h2>
-                    <p className="text-muted-foreground mt-2">See how our community wears their Nkins pieces. Tag us to be featured!</p>
+                    <h2 className="text-3xl md:text-4xl font-bold">#GiftoStyle</h2>
+                    <p className="text-muted-foreground mt-2">See how our community rocks their Gifto Boutique fits. Tag us to be featured!</p>
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {showcaseImages.map((image, index) => (

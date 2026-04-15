@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 export default function PolicyPage() {
   return (
     <div className="container mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8 text-center">Nkins Policies</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Gifto Boutique Policies</h1>
 
       {/* Privacy Policy */}
       <Card className="mb-6">
@@ -26,7 +26,7 @@ export default function PolicyPage() {
           </p>
           <p>
             Payment information is securely handled by trusted third-party gateways (such as
-            <strong> Paystack</strong>) and is never stored directly by Nkins.
+            <strong> Paystack</strong>) and is never stored directly by Gifto Boutique.
           </p>
         </CardContent>
       </Card>
@@ -39,7 +39,7 @@ export default function PolicyPage() {
         <CardContent className="space-y-4">
           <p>Orders are typically processed within <strong>1–2 business days</strong> after confirmation.</p>
           <ul className="list-disc list-inside space-y-1">
-            <li><strong>Lagos</strong>: 1–3 business days</li>
+            <li><strong>Uyo / Akwa Ibom</strong>: 1–2 business days</li>
             <li><strong>Other Nigerian States</strong>: 3–7 business days</li>
           </ul>
           <p>
@@ -92,7 +92,7 @@ export default function PolicyPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p>
-            By placing an order on Nkins, you agree to abide by these policies.
+            By placing an order on Gifto Boutique, you agree to abide by these policies.
           </p>
           <p>
             We reserve the right to update or modify our policies at any time. Changes will

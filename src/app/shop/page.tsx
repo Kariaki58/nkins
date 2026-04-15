@@ -2,8 +2,8 @@ import { getProducts, getCategories } from '@/lib/products';
 import { ShopClient } from '@/components/shop/ShopClient';
 
 export const metadata = {
-  title: 'Shop All Collections - Nkins Online',
-  description: 'Browse our full collection of beautiful dresses, tops, skirts, and jumpsuits. Find your perfect outfit at Nkins Online.',
+  title: 'Shop All Collections - Gifto Boutique',
+  description: 'Browse our full collection of premium suits, trousers, shirts, and accessories. Find your perfect outfit at Gifto Boutique, Uyo.',
 };
 
 interface SearchParams {
@@ -50,7 +50,7 @@ export default async function ShopPage({ searchParams }: { searchParams: SearchP
     <div className="container mx-auto px-4 py-8 md:py-12">
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-bold">Our Collection</h1>
-        <p className="text-muted-foreground mt-2">Discover pieces that tell your story.</p>
+        <p className="text-muted-foreground mt-2">Quality men's wear for every occasion.</p>
       </div>
       <ShopClient products={products} categories={categories} />
     </div>

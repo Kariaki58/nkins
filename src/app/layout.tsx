@@ -8,9 +8,9 @@ import { CartProvider } from '@/hooks/use-cart';
 import { AuthProvider } from './auth-provider';
 
 export const metadata: Metadata = {
-  title: 'Nkins Online - Premium Female Fashion',
-  description: 'Discover the latest trends in female fashion. Shop exquisite dresses and clothing at Nkins Online.',
-  keywords: ['female fashion', 'dresses', 'online store', 'nigeria fashion', 'Nkins'],
+  title: 'Gifto Boutique - Premium Men\'s Fashion',
+  description: 'Discover first-class suits, trousers, and accessories at Gifto Boutique, Uyo. Quality men\'s clothing at affordable prices.',
+  keywords: ['men\'s fashion', 'suits', 'trousers', 'online store', 'nigeria fashion', 'Gifto Boutique', 'Uyo'],
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 import { CheckoutClient } from "@/components/checkout/CheckoutClient";
 
 export const metadata = {
-    title: 'Checkout - Nkins Online',
+    title: 'Checkout - Gifto Boutique',
     description: 'Complete your purchase securely.',
 };
 
