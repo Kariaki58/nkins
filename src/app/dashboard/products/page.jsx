@@ -192,7 +192,7 @@ export default function DashboardProduct() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-2xl font-bold">Products</h1>
-                <Link href="/dashboard/products/new" passHref>
+                <Link href="/dashboard/new" passHref>
                     <Button>
                         <Plus className="h-4 w-4 mr-2" />
                         Add Product
