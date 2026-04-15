@@ -11,7 +11,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground">
-              Quality men's clothing, trusted by Uyo.
+              Premium men's fashion since day one. Uyo, Akwa Ibom.
             </p>
           </div>
           <div>
